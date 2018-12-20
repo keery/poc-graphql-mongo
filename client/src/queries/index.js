@@ -1,0 +1,1 @@
+export { default as GET_ALL_RESTAURANTS } from './GET_ALL_RESTAURANTS';
