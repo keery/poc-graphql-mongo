@@ -16,8 +16,9 @@ var schema = buildSchema(`
     getRestaurantById(id : Int!) : Restaurant
     getRestaurants(limit : Int, skip : Int) : [Restaurant]
   }
-
+  
   type Restaurant {
+    restaurant_id : String!
     address : Address
     borough : String
     cuisine : String
@@ -48,14 +49,17 @@ app.use(async (req, res, next) => {
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  getRestaurantById : async ({id}) => await Restaurants.findOne(),
+  getRestaurantById : async ({id}) => {
+    const te = await Restaurants.findOne()
+    return te;
+  },
   // getRestaurants : async ({skip = 0, limit = 50}) => { 
   //   const restaurants = await Restaurants.distinct("cuisine");
   //   return restaurants.map(el => {
   //     return { cuisine : el }
   //   })
   // }
-  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find().sort({cuisine:1}).skip(skip).limit(limit).toArray()
+  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find({ name : { $ne : ""}}).sort({name : 1}).skip(skip).limit(limit).toArray()
   // getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.aggregate([
   //                                                                                   { $sort : { cuisine : -1 } },
   //                                                                                   // { $group : {_id : "$key", scores : { $push : "$score" } } }
