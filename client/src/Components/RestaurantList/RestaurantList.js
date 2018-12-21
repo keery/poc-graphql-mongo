@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { withApollo } from 'react-apollo';
 import { GET_ALL_RESTAURANTS } from '../../queries'
+import Loader from '../Loader'
 
 class RestaurantList extends Component {
   
@@ -30,6 +31,8 @@ class RestaurantList extends Component {
   render() {
     const { restaurants } = this.state
 
+    if (restaurants.length === 0) return <Loader />
+    
     return (
       <Fragment>
         <h1>Restaurants in New-York</h1>
