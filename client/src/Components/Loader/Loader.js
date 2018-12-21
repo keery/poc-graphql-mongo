@@ -1,8 +1,9 @@
-import React, { Fragment, Component } from 'react';
+import React from 'react';
 import loaderImg from '../../asserts/img/flask-loader.gif'
+
 const Loader = () => (
   <div className="loader">
-    <img src={loaderImg} />
+    <img src={loaderImg} alt="Loader flask" />
   </div>
 )
 

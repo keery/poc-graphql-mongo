@@ -1,6 +1,7 @@
-import React, { Fragment, Component } from 'react';
-import { withApollo } from 'react-apollo';
+import React, { Fragment, Component } from 'react'
+import { withApollo } from 'react-apollo'
 import { GET_ALL_RESTAURANTS } from '../../queries'
+import { Link } from 'react-router-dom'
 import Loader from '../Loader'
 
 class RestaurantList extends Component {
@@ -32,19 +33,19 @@ class RestaurantList extends Component {
     const { restaurants } = this.state
 
     if (restaurants.length === 0) return <Loader />
-    
+
     return (
       <Fragment>
         <h1>Restaurants in New-York</h1>
         <ul className="row">
-          { restaurants.length > 0 && restaurants.map(({name, borough, cuisine}, i) => (
-            <div className="col-4" key={i}>
+          { restaurants.length > 0 && restaurants.map(({restaurant_id : id, name, borough, cuisine}) => (
+            <div className="col-4" key={id}>
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">{ name }</h5>
                   <p className="card-text"><b>Cuisine :</b> { cuisine }</p>
                   <p className="card-text"><b>Borough :</b> { borough }</p>
-                  <a href="#" className="btn btn-primary">See more</a>
+                  <Link to={`/restaurant/${id}`} className="btn btn-primary">See more</Link>
                 </div>
               </div>
             </div>
