@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
-import MovieList from '../MovieList/MovieList'
 import { withApollo } from 'react-apollo';
+import './App.css';
+import RestaurantList from '../../Components/RestaurantList/RestaurantList'
 import { GET_ALL_RESTAURANTS } from '../../queries'
 
 class App extends Component {
@@ -18,12 +18,17 @@ class App extends Component {
     const restaurants = await client.query({
       query : GET_ALL_RESTAURANTS
     })
-    this.setState({ restaurants })
+
+    this.setState({ restaurants : restaurants.data.getRestaurants })
   }
 
   render() {
+    const { restaurants } = this.state
+
     return (
-      <div><MovieList /></div>
+      <div className="container-fluid">
+        <RestaurantList restaurants={restaurants} />
+      </div>
     )
   }
 }

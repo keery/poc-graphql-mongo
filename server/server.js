@@ -9,23 +9,12 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-const GET_ORGANIZATION = `
-{
-  search(location: "san francisco") {
-    business {
-      name
-    }
-  }
-}
-`;
-
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
 
   type Query {
     getRestaurantById(id : Int!) : Restaurant
-    getRestaurants : [Restaurant]
+    getRestaurants(limit : Int, skip : Int) : [Restaurant]
   }
 
   type Restaurant {
@@ -60,7 +49,16 @@ app.use(async (req, res, next) => {
 // The root provides a resolver function for each API endpoint
 var root = {
   getRestaurantById : async ({id}) => await Restaurants.findOne(),
-  getRestaurants : async () => await Restaurants.find().toArray()
+  // getRestaurants : async ({skip = 0, limit = 50}) => { 
+  //   const restaurants = await Restaurants.distinct("cuisine");
+  //   return restaurants.map(el => {
+  //     return { cuisine : el }
+  //   })
+  // }
+  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find().sort({cuisine:1}).skip(skip).limit(limit).toArray()
+  // getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.aggregate([
+  //                                                                                   { $sort : { cuisine : -1 } },
+  //                                                                                   // { $group : {_id : "$key", scores : { $push : "$score" } } }
 };
 
 
