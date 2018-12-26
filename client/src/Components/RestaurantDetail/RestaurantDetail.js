@@ -26,7 +26,7 @@ class RestaurantDetail extends Component {
     this.setState({ ...restaurant.data.getRestaurantById })
   }
 
-  render() {
+  render() { 
     const { id, borough, cuisine, name, address : { building, street, zipcode }, grades} = this.state
 
     if (!name) return <Loader />
