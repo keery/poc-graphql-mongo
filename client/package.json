@@ -6,6 +6,7 @@
   "dependencies": {
     "apollo-boost": "^0.1.22",
     "apollo-link-context": "^1.0.10",
+    "formik": "^1.4.1",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "react": "^16.6.3",
@@ -14,7 +15,8 @@
     "react-router": "^4.3.1",
     "react-router-config": "^4.4.0-beta.6",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "yup": "^0.26.6"
   },
   "scripts": {
     "start": "react-scripts start",
