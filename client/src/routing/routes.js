@@ -1,6 +1,7 @@
 import App from '../container/App';
 import RestaurantDetail from '../Components/RestaurantDetail';
 import RestaurantList from '../Components/RestaurantList';
+import RestaurantForm from '../Components/RestaurantForm';
 
 const routes = [
     {
@@ -14,6 +15,10 @@ const routes = [
             {
                 path      : '/restaurant/:id',
                 component : RestaurantDetail,
+            },
+            {
+                path      : '/add',
+                component : RestaurantForm,
             },
         ],
     },
