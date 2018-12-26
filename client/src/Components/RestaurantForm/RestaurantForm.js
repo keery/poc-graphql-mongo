@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
+import ErrorForm from '../ErrorForm'
 import * as Yup from 'yup';
 
 class RestaurantForm extends Component {
@@ -28,14 +29,6 @@ class RestaurantForm extends Component {
     console.log(event);
   }
 
-  validateForm({building}) {
-    const errors = {}
-
-    if(isNaN(Number(building))) errors.building = 'Building must be an integer'
-
-    return errors
-  }
-  
   render() { 
     const { initialValues, validationSchema } = this.state
     
@@ -46,20 +39,19 @@ class RestaurantForm extends Component {
           initialValues={initialValues}
           onSubmit={this.handleSubmit}
           validationSchema={validationSchema}
-          // validate={this.validateForm}
         >
           <Form>
             <div className="form-group row">
               <label htmlFor="nameRest" className="col-sm-2 col-form-label">Name</label>
               <div className="col-sm-10">
-                <ErrorMessage name="name" />
+                <ErrorForm name="name" />
                 <Field type="text" name="name" id="nameRest" className="form-control" />
               </div>
             </div>
             <div className="form-group row">
               <label htmlFor="cuisineRest" className="col-sm-2 col-form-label">Cuisine type</label>
               <div className="col-sm-10">
-                <ErrorMessage name="cuisine" />
+                <ErrorForm name="cuisine" />
                 <Field type="text" name="cuisine" id="cuisineRest" className="form-control" />
               </div>
             </div>
@@ -67,21 +59,21 @@ class RestaurantForm extends Component {
             <div className="form-group row">
               <label htmlFor="zipRest" className="col-sm-2 col-form-label">Zip code</label>
               <div className="col-sm-10">
-                <ErrorMessage name="zipcode" />
+                <ErrorForm name="zipcode" />
                 <Field type="text" name="zipcode" id="zipcodeRest" className="form-control" />
               </div>
             </div>
             <div className="form-group row">
               <label htmlFor="buildingRest" className="col-sm-2 col-form-label">Building</label>
               <div className="col-sm-10">
-                <ErrorMessage name="building" />
+                <ErrorForm name="building" />
                 <Field type="text" name="building" id="buildingRest" className="form-control" />
               </div>
             </div>
             <div className="form-group row">
               <label htmlFor="streetRest" className="col-sm-2 col-form-label">Street</label>
               <div className="col-sm-10">
-                <ErrorMessage name="street" />
+                <ErrorForm name="street" />
                 <Field type="text" name="street" id="streetRest" className="form-control" />
               </div>
             </div>
