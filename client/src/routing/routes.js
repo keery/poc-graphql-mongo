@@ -4,7 +4,7 @@ import RestaurantList from '../Components/RestaurantList';
 
 const routes = [
     {
-        component : App, // Top component of all pages.
+        component : App,
         routes    : [
             {
                 path      : '/restaurants',

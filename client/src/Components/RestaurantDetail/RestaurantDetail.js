@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo'
+import { Link } from 'react-router-dom'
 import { GET_RESTAURANT_BY_ID } from '../../queries'
 import Loader from '../Loader'
 
@@ -8,25 +9,25 @@ class RestaurantDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      client : props.client,
-      id : parseInt(props.match.params.id),
-      restaurants : null
+      client      : props.client,
+      id          : props.match.params.id,
+      restaurants : null,
+      address     : {},
+      grades      : []
     };
   }
   
   async componentDidMount() {
     const { client, id } = this.state
-
     const restaurant = await client.query({
       query : GET_RESTAURANT_BY_ID,
       variables : { id }
     })
-
     this.setState({ ...restaurant.data.getRestaurantById })
   }
 
   render() {
-    const { id, borough, cuisine, name } = this.state
+    const { id, borough, cuisine, name, address : { building, street, zipcode }, grades} = this.state
 
     if (!name) return <Loader />
 
@@ -38,11 +39,19 @@ class RestaurantDetail extends Component {
         </div>
         <div className="card-body">
           <blockquote className="blockquote mb-0">
-            <p>Borough : { borough }</p>
-            <p>Cuisine : { cuisine }</p>
-            <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+            <div className="blockquote-footer">Situated in <cite title="Source Title">{building} {street}, {zipcode} in { borough }</cite></div>
+            <p>This restaurant make { cuisine } food</p>
+            <div className="blockquote-footer">
+            { grades.length > 0 && 
+              <div>
+                <div>Grades :</div>
+                { grades.map(({grade, score}, i) => <div key={i}><b>{grade}</b> : {score}</div>)}
+              </div>
+            }
+            </div>
           </blockquote>
         </div>
+        <Link to="/restaurants" className="btn btn-primary">Back to list</Link>
       </div>)
   }
   
