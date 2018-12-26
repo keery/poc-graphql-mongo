@@ -40,7 +40,7 @@ class RestaurantDetail extends Component {
         <div className="card-body">
           <blockquote className="blockquote mb-0">
             <div className="blockquote-footer">Situated in <cite title="Source Title">{building} {street}, {zipcode} in { borough }</cite></div>
-            <p>This restaurant make { cuisine } food</p>
+            <p>This restaurant make { cuisine.toLowerCase() } food</p>
             <div className="blockquote-footer">
             { grades.length > 0 && 
               <div>

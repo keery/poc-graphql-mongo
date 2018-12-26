@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
+import Navbar from '../../Components/Navbar'
 import { renderRoutes } from 'react-router-config';
 
 
-const App = (props) => (
+const App = ({ location, route }) => (
   <div className="container-fluid">
-    { renderRoutes(props.route.routes) }
+    <Navbar location={location} />
+    { renderRoutes(route.routes) }
   </div>
 )
 
