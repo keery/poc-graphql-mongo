@@ -1,38 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { ApolloProvider } from 'react-apollo'
-import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http';
-import { onError } from "apollo-link-error";
-import { from } from 'apollo-link';
-
 import { BrowserRouter } from "react-router-dom";
-import { renderRoutes } from 'react-router-config';
 import routes from "./routing/routes";
+import { renderRoutes } from 'react-router-config';
 
+import { ApolloProvider } from 'react-apollo'
+import client from './gql/apollo-client'
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  console.log('ereur guillaume');
-});
-
-
-const httpLink = new HttpLink({
-  uri: "/graphql"
-});
-
-const link = from([
-  errorLink,
-  httpLink
-]);
-
-const client = new ApolloClient({
-    link,
-    cache: new InMemoryCache(),
-})
 
 ReactDOM.render(<ApolloProvider client={client}>
                   <BrowserRouter>
