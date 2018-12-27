@@ -30,6 +30,7 @@ class RestaurantForm extends Component {
 
   handleSubmit = async (values) => {
     const { client } = this.state
+    this.setState({isSubmitting : true})
 
     const { data : { createRestaurant : { restaurant_id } } } = await client.mutate({
       mutation  : CREATE_RESTAURANT,
@@ -37,10 +38,11 @@ class RestaurantForm extends Component {
     })
 
     console.log(restaurant_id);
+    this.setState({isSubmitting : false})
   }
 
   render() { 
-    const { initialValues, validationSchema } = this.state
+    const { initialValues, validationSchema, isSubmitting } = this.state
     
     return (
       <Fragment>
@@ -88,14 +90,17 @@ class RestaurantForm extends Component {
               </div>
             </div>
             <div className="text-right">
-              <button type="submit" className="btn btn-primary btn-block">Add</button>
+              <button type="submit" className="btn btn-primary btn-block" disabled={isSubmitting}>Add</button>
             </div>
           </Form>
         </Formik>
       </Fragment>
     )
   }
-  
 }
+
+RestaurantForm.defaultProps = {
+  isSubmitting: false
+};
 
 export default withApollo(RestaurantForm)
