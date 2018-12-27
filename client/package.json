@@ -16,6 +16,7 @@
     "react-router-config": "^4.4.0-beta.6",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
+    "uniqid": "^5.0.3",
     "yup": "^0.26.6"
   },
   "scripts": {

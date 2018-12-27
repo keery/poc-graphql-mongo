@@ -12,8 +12,7 @@ class RestaurantDetail extends Component {
       client      : props.client,
       id          : props.match.params.id,
       restaurants : null,
-      address     : {},
-      grades      : []
+      address     : {}
     };
   }
   
@@ -42,7 +41,7 @@ class RestaurantDetail extends Component {
             <div className="blockquote-footer">Situated in <cite title="Source Title">{building} {street}, {zipcode} in { borough }</cite></div>
             <p>This restaurant make { cuisine.toLowerCase() } food</p>
             <div className="blockquote-footer">
-            { grades.length > 0 && 
+            { grades && grades.length > 0 && 
               <div>
                 <div>Grades :</div>
                 { grades.map(({grade, score}, i) => <div key={i}><b>{grade}</b> : {score}</div>)}

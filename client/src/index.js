@@ -10,11 +10,15 @@ import client from './gql/apollo-client'
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<ApolloProvider client={client}>
-                  <BrowserRouter>
-                    { renderRoutes(routes) }
-                  </BrowserRouter>
-                </ApolloProvider>
+import ErrorProvider  from './Components/ErrorProvider';
+
+ReactDOM.render(<ErrorProvider>
+                  <ApolloProvider client={client}>
+                    <BrowserRouter>
+                      { renderRoutes(routes) }
+                    </BrowserRouter>
+                  </ApolloProvider>
+                </ErrorProvider>
                 , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
