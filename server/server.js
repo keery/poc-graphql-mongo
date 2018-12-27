@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
 import graphqlHTTP from 'express-graphql';
-import { buildSchema } from 'graphql';
+import { buildSchema, GraphQLError } from 'graphql';
 
 const app = express();
 const port = process.env.PORT || 5000;

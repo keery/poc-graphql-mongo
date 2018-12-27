@@ -10,6 +10,16 @@ class ErrorProvider extends Component {
     }
   }
 
+  componentDidMount() {
+    document.addEventListener("throwError", ({detail}) => this.throwError(detail));
+  }
+
+  componentWillUnmount() {
+    // Make sure to remove the DOM listener when the component is unmounted.
+    console.log('unmount');
+    // document.removeEventListener("throwError", () => console.log('exit'));
+  }
+
   throwError = (error) => {
     if (error.msg) {
       const { errors } = this.state
