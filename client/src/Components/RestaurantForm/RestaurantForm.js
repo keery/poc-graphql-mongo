@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import ErrorForm from '../ErrorForm'
 import { withApollo } from 'react-apollo'
 import * as Yup from 'yup';
-import { CREATE_RESTAURANT } from '../../mutations';
+import { CREATE_RESTAURANT } from '../../gql/mutations';
 
 class RestaurantForm extends Component {
   
@@ -28,12 +28,15 @@ class RestaurantForm extends Component {
     }
   }
 
-  handleSubmit = (values) => {
+  handleSubmit = async (values) => {
     const { client } = this.state
-    client.mutate({
+
+    const { data : { createRestaurant : { restaurant_id } } } = await client.mutate({
       mutation  : CREATE_RESTAURANT,
       variables : { restaurant : values }
     })
+
+    console.log(restaurant_id);
   }
 
   render() { 

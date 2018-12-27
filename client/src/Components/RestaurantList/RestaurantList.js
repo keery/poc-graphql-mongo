@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react'
 import { withApollo } from 'react-apollo'
-import { GET_ALL_RESTAURANTS } from '../../queries'
+import { GET_ALL_RESTAURANTS } from '../../gql/queries'
 import { Link } from 'react-router-dom'
 import Loader from '../Loader'
 
@@ -20,12 +20,6 @@ class RestaurantList extends Component {
     const restaurants = await client.query({
       query : GET_ALL_RESTAURANTS
     })
-    // const restaurants = await client.query({
-    //   query : GET_RESTAURANT_BY_ID,
-    //   variables : { id : 1 }
-    // })
-
-    // this.setState({ restaurant : restaurants.data.getRestaurantById })
     this.setState({ restaurants : restaurants.data.getRestaurants })
   }
 

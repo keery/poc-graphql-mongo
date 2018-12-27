@@ -68,9 +68,24 @@ app.use(async (req, res, next) => {
 
 var root = {
   getRestaurantById : async ({id}) => await Restaurants.findOne({restaurant_id : { $eq : id }}),
-  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find({ name : { $ne : ""}}).sort({name : 1}).skip(skip).limit(limit).toArray(),
-  createRestaurant : (resto) => {
-    console.log(resto);
+  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray(),
+  createRestaurant : async ({restaurant : {name, cuisine, building, zipcode, street}}) => {
+    const restaurant_id = String(Number.parseInt(Math.random() * 1000000000))
+    
+    const { insertedId , result : { ok }} = await Restaurants.insertOne({
+      name,
+      cuisine,
+      address : {
+        building,
+        zipcode,
+        street
+      },
+      restaurant_id
+    })
+
+    if(!ok) throw new Error('Insertion failed')
+
+    return { restaurant_id }
   }
 };
 
