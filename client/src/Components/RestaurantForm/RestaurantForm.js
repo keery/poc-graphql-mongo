@@ -1,13 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { Formik, Form, Field } from 'formik';
 import ErrorForm from '../ErrorForm'
+import { withApollo } from 'react-apollo'
 import * as Yup from 'yup';
+import { CREATE_RESTAURANT } from '../../mutations';
 
 class RestaurantForm extends Component {
   
   constructor(props) {
     super(props)
     this.state = {
+      client : props.client,
       initialValues : {
         name     : '',
         cuisine  : '',
@@ -25,8 +28,12 @@ class RestaurantForm extends Component {
     }
   }
 
-  handleSubmit(event) {
-    console.log(event);
+  handleSubmit = (values) => {
+    const { client } = this.state
+    client.mutate({
+      mutation  : CREATE_RESTAURANT,
+      variables : { restaurant : values }
+    })
   }
 
   render() { 
@@ -67,7 +74,7 @@ class RestaurantForm extends Component {
               <label htmlFor="buildingRest" className="col-sm-2 col-form-label">Building</label>
               <div className="col-sm-10">
                 <ErrorForm name="building" />
-                <Field type="text" name="building" id="buildingRest" className="form-control" />
+                <Field type="number" name="building" id="buildingRest" className="form-control" />
               </div>
             </div>
             <div className="form-group row">
@@ -88,4 +95,4 @@ class RestaurantForm extends Component {
   
 }
 
-export default RestaurantForm
+export default withApollo(RestaurantForm)

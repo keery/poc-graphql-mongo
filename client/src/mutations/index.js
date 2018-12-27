@@ -1,0 +1,1 @@
+export { default as CREATE_RESTAURANT } from './CREATE_RESTAURANT';

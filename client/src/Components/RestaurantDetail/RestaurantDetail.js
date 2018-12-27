@@ -20,7 +20,7 @@ class RestaurantDetail extends Component {
   async componentDidMount() {
     const { client, id } = this.state
     const restaurant = await client.query({
-      query : GET_RESTAURANT_BY_ID,
+      query     : GET_RESTAURANT_BY_ID,
       variables : { id }
     })
     this.setState({ ...restaurant.data.getRestaurantById })
