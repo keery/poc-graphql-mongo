@@ -11,6 +11,7 @@ class RestaurantForm extends Component {
     super(props)
     this.state = {
       client : props.client,
+      isSubmitting: props.isSubmitting,
       initialValues : {
         name     : '',
         cuisine  : '',
