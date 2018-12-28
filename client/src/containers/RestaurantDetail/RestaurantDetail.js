@@ -62,7 +62,7 @@ class RestaurantDetail extends Component {
         <div className="card-body">
           <blockquote className="blockquote mb-0">
             <div className="text-right">
-              <button onClick={this.deleteRestaurant}>❌</button>
+              <button onClick={this.deleteRestaurant}><span role="img" aria-label="Cross icon">❌</span></button>
             </div>
             <div className="blockquote-footer">Situated in <cite title="Source Title">{building} {street}, {zipcode} in { borough }</cite></div>
             <p>This restaurant make { cuisine.toLowerCase() } food</p>

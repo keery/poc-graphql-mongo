@@ -33,13 +33,16 @@ class RestaurantForm extends Component {
     const { client } = this.state
     this.setState({isSubmitting : true})
 
-    const { data : { createRestaurant : { restaurant_id } } } = await client.mutate({
+    await client.mutate({
       mutation  : CREATE_RESTAURANT,
       variables : { restaurant : values }
     })
-
-    console.log(restaurant_id);
-    this.setState({isSubmitting : false})
+    .then(({ data : { createRestaurant : { restaurant_id } } }) => {
+      this.props.history.push(`/restaurant/${restaurant_id}`)
+    })
+    .catch(res => {
+      this.setState({isSubmitting : false})
+    })
   }
 
   render() { 

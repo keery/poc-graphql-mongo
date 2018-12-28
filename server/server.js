@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
 import graphqlHTTP from 'express-graphql';
-import { buildSchema, GraphQLError } from 'graphql';
+import { buildSchema } from 'graphql';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -84,16 +84,17 @@ var root = {
       restaurant_id
     })
 
-    if(!ok) throw new Error('Insertion failed')
+    if(ok) return { restaurant_id }
 
-    return { restaurant_id }
+    throw new Error('Insertion failed')
   },
   deleteRestaurant : async ({ restaurant_id }) => {
-    const { result : { ok }} = await Restaurants.remove({restaurant_id}, true)
+    //  2nd param "true", signify only one deletion
+    const { result : { ok }} = await Restaurants.deleteOne({restaurant_id}, true)
     
     if(!ok) throw new Error('Deletion failed')
 
-    return false
+    return ok
   }
 };
 
