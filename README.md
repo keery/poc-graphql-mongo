@@ -20,6 +20,7 @@ The project is divided in two parts
 The application's front was created from CRA ([create-react-app](https://github.com/facebook/create-react-app)).  
 It uses [apollo-client](https://github.com/apollographql/apollo-client) and react-apollo in goal to make GraphQL requests directly to server side.  
 You can access to it by this link [localhost:3000](http://localhost:3000)  
+  
 The client includes 4 routes :
 - **/** : Home component
 - **/restaurants** : List of restaurants
@@ -33,7 +34,7 @@ It uses a MongoDB database which contains one collection named "restaurants".
 In developement if you access to localhost:5000/graphql you will can see a tool named GraphiQL, it's a sandbox allowing to make some GQL queries according to server schemas
 
 ## Link between GQL and Mongo
-A default restaurant object 
+A default restaurant object in database
 ``` js
 // Restaurant object
 {
