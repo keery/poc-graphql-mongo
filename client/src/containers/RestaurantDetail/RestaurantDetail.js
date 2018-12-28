@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { withApollo } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import { GET_RESTAURANT_BY_ID } from '../../gql/queries'
+import { DELETE_RESTAURANT } from '../../gql/mutations'
 import Loader from '../../components/Loader'
+import { ErrorContext }  from '../../context'
 
 class RestaurantDetail extends Component {
   
@@ -25,6 +27,27 @@ class RestaurantDetail extends Component {
     this.setState({ ...restaurant.data.getRestaurantById })
   }
 
+  deleteRestaurant = async () => {
+    const { client, id : restaurant_id } = this.state
+    
+    const { data : { deleteRestaurant : success  } } = await client.mutate({
+      mutation  : DELETE_RESTAURANT,
+      variables : { restaurant_id }
+    })
+    
+    if(success) {
+      this.context.throwError({
+        msg : `Restaurant with id ${restaurant_id} was deleted`,
+        type : 'success'
+      })
+      this.props.history.push(`/restaurants`)
+    }
+    else this.context.throwError({
+        msg : `An error occured`,
+        type : 'danger'
+      })
+  }
+
   render() { 
     const { id, borough, cuisine, name, address : { building, street, zipcode }, grades} = this.state
 
@@ -38,6 +61,9 @@ class RestaurantDetail extends Component {
         </div>
         <div className="card-body">
           <blockquote className="blockquote mb-0">
+            <div className="text-right">
+              <button onClick={this.deleteRestaurant}>❌</button>
+            </div>
             <div className="blockquote-footer">Situated in <cite title="Source Title">{building} {street}, {zipcode} in { borough }</cite></div>
             <p>This restaurant make { cuisine.toLowerCase() } food</p>
             <div className="blockquote-footer">
@@ -56,4 +82,5 @@ class RestaurantDetail extends Component {
   
 }
 
+RestaurantDetail.contextType = ErrorContext
 export default withApollo(RestaurantDetail)

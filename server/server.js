@@ -26,6 +26,7 @@ var schema = buildSchema(`
 
   type Mutation {
     createRestaurant(restaurant : RestaurantInput!) : Restaurant
+    deleteRestaurant(restaurant_id : String!) : Boolean
   }
   
   type Restaurant {
@@ -86,6 +87,13 @@ var root = {
     if(!ok) throw new Error('Insertion failed')
 
     return { restaurant_id }
+  },
+  deleteRestaurant : async ({ restaurant_id }) => {
+    const { result : { ok }} = await Restaurants.remove({restaurant_id}, true)
+    
+    if(!ok) throw new Error('Deletion failed')
+
+    return false
   }
 };
 
