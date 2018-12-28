@@ -2,16 +2,15 @@
   "name": "example-create-react-app-express",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && npm run start",
-    "server": "cd server && npm run dev",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "client-dev": "cd client && npm run start",
+    "server-dev": "cd server && npm run dev",
+    "client-dependencies": "cd client && npm i",
+    "server-dependencies": "cd server && npm i",
+    "dev": "SET NODE_ENV=development && concurrently --kill-others-on-fail \"npm run server-dev\" \"npm run client-dev\"",
+    "i": "npm install && concurrently --kill-others-on-fail \"npm run server-dependencies\" \"npm run client-dependencies\""
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1",
     "concurrently": "^4.0.1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
