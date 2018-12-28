@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withApollo } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import { GET_RESTAURANT_BY_ID } from '../../gql/queries'
-import Loader from '../Loader'
+import Loader from '../../components/Loader'
 
 class RestaurantDetail extends Component {
   

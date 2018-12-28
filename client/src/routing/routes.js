@@ -1,8 +1,8 @@
-import App from '../container/App';
-import RestaurantDetail from '../Components/RestaurantDetail';
-import RestaurantList from '../Components/RestaurantList';
-import RestaurantForm from '../Components/RestaurantForm';
-import Home from '../Components/Home';
+import App from '../containers/App';
+import RestaurantDetail from '../containers/RestaurantDetail';
+import RestaurantList from '../containers/RestaurantList';
+import RestaurantForm from '../containers/RestaurantForm';
+import Home from '../containers/Home';
 
 const routes = [
     {

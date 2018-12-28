@@ -1,5 +1,5 @@
 import React from 'react';
-import loaderImg from '../../asserts/img/flask-loader.gif'
+import loaderImg from '../../assets/img/flask-loader.gif'
 
 const Loader = () => (
   <div className="loader">

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Formik, Form, Field } from 'formik';
-import ErrorForm from '../ErrorForm'
+import ErrorForm from '../../components/ErrorForm'
 import { withApollo } from 'react-apollo'
 import * as Yup from 'yup';
 import { CREATE_RESTAURANT } from '../../gql/mutations';

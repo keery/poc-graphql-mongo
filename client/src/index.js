@@ -10,7 +10,7 @@ import client from './gql/apollo-client'
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-import ErrorProvider  from './Components/ErrorProvider';
+import ErrorProvider  from './components/ErrorProvider';
 
 ReactDOM.render(<ErrorProvider>
                   <ApolloProvider client={client}>
