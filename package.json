@@ -12,5 +12,7 @@
   "devDependencies": {
     "concurrently": "^4.0.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "apollo-server-express": "^2.3.1"
+  }
 }

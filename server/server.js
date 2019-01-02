@@ -1,13 +1,21 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
-import graphqlHTTP from 'express-graphql';
-import { buildSchema } from 'graphql';
+import { ApolloServer, gql } from 'apollo-server-express';
 
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+let dbo;
+let Restaurants
+app.use(async (req, res, next) => {
+  const db = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
+  dbo = db.db("new_york");
+  Restaurants = dbo.collection("restaurants")
+  next();
+})
 
 /**
  * type Query = methods dedicated to get data
@@ -17,16 +25,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
  * "type" is reserved to only output data, like get query
  * "input" in contrary "type" it's used to input data, commonly in mutation query
  */
-var schema = buildSchema(`
+const schema = gql`
 
   type Query {
-    getRestaurantById(id : String!) : Restaurant
-    getRestaurants(limit : Int, skip : Int) : [Restaurant]
+    getRestaurantById(id: String!) : Restaurant
+    getRestaurants(limit: Int, skip: Int) : [Restaurant]
   }
 
   type Mutation {
-    createRestaurant(restaurant : RestaurantInput!) : Restaurant
-    deleteRestaurant(restaurant_id : String!) : Boolean
+    createRestaurant(restaurant: RestaurantInput!) : Restaurant
+    deleteRestaurant(restaurant_id: String!) : Boolean
   }
   
   type Restaurant {
@@ -56,53 +64,49 @@ var schema = buildSchema(`
     grade : String
     score : Int
   }
-`);
+`;
 
-let dbo;
-let Restaurants
-app.use(async (req, res, next) => {
-  const db = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
-  dbo = db.db("new_york");
-  Restaurants = dbo.collection("restaurants")
-  next();
-})
-
-var root = {
-  getRestaurantById : async ({id}) => await Restaurants.findOne({restaurant_id : { $eq : id }}),
-  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray(),
-  createRestaurant : async ({restaurant : {name, cuisine, building, zipcode, street}}) => {
-    const restaurant_id = String(Number.parseInt(Math.random() * 1000000000))
-    
-    const { insertedId , result : { ok }} = await Restaurants.insertOne({
-      name,
-      cuisine,
-      address : {
-        building,
-        zipcode,
-        street
-      },
-      restaurant_id
-    })
-
-    if(ok) return { restaurant_id }
-
-    throw new Error('Insertion failed')
+const resolvers = {
+  // First obj param contain, in cas or second level query, the result of parent's resolvers (https://www.apollographql.com/docs/graphql-tools/resolvers.html)
+  Query : {
+    getRestaurantById : async (obj, {id}) => await Restaurants.findOne({restaurant_id : { $eq : id }}),
+    getRestaurants : async (obj, {skip = 0, limit = 50}) => await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray(),
   },
-  deleteRestaurant : async ({ restaurant_id }) => {
-    //  2nd param "true", signify only one deletion
-    const { result : { ok }} = await Restaurants.deleteOne({restaurant_id}, true)
-    
-    if(!ok) throw new Error('Deletion failed')
-
-    return ok
+  Mutation : {
+    createRestaurant : async (obj, {restaurant : {name, cuisine, building, zipcode, street}}) => {
+      const restaurant_id = String(Number.parseInt(Math.random() * 1000000000))
+      
+      const { insertedId , result : { ok }} = await Restaurants.insertOne({
+        name,
+        cuisine,
+        address : {
+          building,
+          zipcode,
+          street
+        },
+        restaurant_id
+      })
+  
+      if(!ok) throw new Error('Insertion failed')
+  
+      return { restaurant_id }
+    },
+    deleteRestaurant : async (obj, { restaurant_id }) => {
+      //  2nd param "true", signify only one deletion
+      const { result : { ok }} = await Restaurants.deleteOne({restaurant_id}, true)
+      
+      if(!ok) throw new Error('Deletion failed')
+  
+      return ok
+    }
   }
 };
 
 
-app.use('/graphql', graphqlHTTP({
-  schema,
-  rootValue: root,
-  graphiql: true,
-}));
+const server = new ApolloServer({ typeDefs : schema, resolvers });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+server.applyMiddleware({ app }); // Add our apollo server in our express server
+
+app.listen({ port }, () =>
+  console.log(`🚀 Server ready at http://localhost:${port + server.graphqlPath}`)
+)

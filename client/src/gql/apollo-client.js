@@ -4,7 +4,7 @@ import { HttpLink } from 'apollo-link-http'
 import { onError } from "apollo-link-error"
 import { from } from 'apollo-link'
 
-const errorLink = onError(({ graphQLErrors, networkError, response : {errors} }) => {
+const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         if (graphQLErrors) {
             graphQLErrors.map(({ message, locations, path }) =>
