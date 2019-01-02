@@ -60,12 +60,11 @@ var schema = buildSchema(`
   }
 `);
 
-let dbo;
 let Restaurants
 app.use(async (req, res, next) => {
-  const db = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
-  dbo = db.db("new_york");
-  Restaurants = dbo.collection("restaurants")
+  const client = await MongoClient.connect('mongodb://poc_test:poc123@ds161022.mlab.com:61022/new-york-restaurants', { useNewUrlParser: true })
+  const db = client.db();
+  Restaurants = db.collection("restaurants")
   next();
 })
 
