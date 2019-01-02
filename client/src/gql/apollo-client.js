@@ -4,7 +4,8 @@ import { HttpLink } from 'apollo-link-http'
 import { onError } from "apollo-link-error"
 import { from } from 'apollo-link'
 
-const errorLink = onError(({ graphQLErrors, networkError, response : {errors} }) => {
+// Event listenner when an error occured from apollo
+const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         if (graphQLErrors) {
             graphQLErrors.map(({ message, locations, path }) =>
@@ -19,11 +20,12 @@ const errorLink = onError(({ graphQLErrors, networkError, response : {errors} })
     }
 })
 
-
+// Link http which target our endpoint
 const httpLink = new HttpLink({
     uri: "/graphql"
 })
 
+// Combine every links for apollo client
 const link = from([
     errorLink,
     httpLink

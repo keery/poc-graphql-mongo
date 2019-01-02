@@ -9,6 +9,7 @@ class RestaurantList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Adding apollo client in our state, it was injected in props with function "withApollo" which wrap our component
       client : props.client,
       restaurants : props.restaurants
     };
@@ -17,9 +18,11 @@ class RestaurantList extends Component {
   async componentDidMount() {
     const { client } = this.state
 
+    // Make a query to GQL server
     const restaurants = await client.query({
       query : GET_ALL_RESTAURANTS
     })
+    
     this.setState({ restaurants : restaurants.data.getRestaurants })
   }
 
