@@ -1,11 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
 import graphqlHTTP from 'express-graphql';
 import { buildSchema } from 'graphql';
 import { Restaurant } from './models';
+const { ObjectId } = mongoose.Types;
 
+// Convert Mongo Id to a string, because GraphQL waiting a String and not an object
+ObjectId.prototype.valueOf = function () {
+  return this.toString();
+};
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -31,11 +35,11 @@ var schema = buildSchema(`
 
   type Mutation {
     createRestaurant(restaurant : RestaurantInput!) : Restaurant
-    deleteRestaurant(restaurant_id : String!) : Boolean
+    deleteRestaurant(_id : String!) : Boolean
   }
   
   type Restaurant {
-    restaurant_id : String!
+    _id           : String!
     address       : Address
     borough       : String
     cuisine       : String
@@ -48,7 +52,7 @@ var schema = buildSchema(`
     street   : String
     zipcode  : String
     cuisine  : String
-    name     : String
+    name     : String!
   }
 
   type Address {
@@ -69,8 +73,8 @@ app.use(async (req, res, next) => {
 })
 
 var root = {
-  getRestaurantById : async ({id}) => await Restaurants.findOne({restaurant_id : { $eq : id }}),
-  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray(),
+  getRestaurantById : async ({id}) => await Restaurant.findOne({_id : { $eq : id }}),
+  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurant.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit),
   createRestaurant : async ({restaurant : {name, cuisine, building, zipcode, street}}) => {
 
     const restaurant = new Restaurant({
@@ -82,16 +86,15 @@ var root = {
           street
         }
     });
-
     const res = await restaurant.save()
-    .then(({_id}) => _id)
+    .then(({_id}) => ({_id}))
     .catch(({_message}) => new Error(_message))
 
     return res
   },
-  deleteRestaurant : async ({ restaurant_id }) => {
+  deleteRestaurant : async ({ _id }) => {
     // 2nd param "true", signify only one deletion
-    const { result : { ok }} = await Restaurants.deleteOne({restaurant_id}, true)
+    const { result : { ok }} = await Restaurants.deleteOne({_id}, true)
     
     if(!ok) throw new Error('Deletion failed')
 

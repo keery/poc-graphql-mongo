@@ -22,7 +22,7 @@ class RestaurantList extends Component {
     const restaurants = await client.query({
       query : GET_ALL_RESTAURANTS
     })
-    
+
     this.setState({ restaurants : restaurants.data.getRestaurants })
   }
 
@@ -35,7 +35,7 @@ class RestaurantList extends Component {
       <Fragment>
         <h1>Restaurants in New-York</h1>
         <ul className="row">
-          { restaurants.length > 0 && restaurants.map(({restaurant_id : id, name, borough, cuisine}) => (
+          { restaurants.length > 0 && restaurants.map(({_id : id, name, borough, cuisine}) => (
             <div className="col-4" key={id}>
               <div className="card">
                 <div className="card-body">

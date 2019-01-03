@@ -37,8 +37,8 @@ class RestaurantForm extends Component {
       mutation  : CREATE_RESTAURANT,
       variables : { restaurant : values }
     })
-    .then(({ data : { createRestaurant : { restaurant_id } } }) => {
-      this.props.history.push(`/restaurant/${restaurant_id}`)
+    .then(({ data : { createRestaurant : { _id } } }) => {
+      this.props.history.push(`/restaurant/${_id}`)
     })
     .catch(res => {
       this.setState({isSubmitting : false})
