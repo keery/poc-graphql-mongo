@@ -28,16 +28,16 @@ class RestaurantDetail extends Component {
   }
 
   deleteRestaurant = async () => {
-    const { client, id : restaurant_id } = this.state
+    const { client, id : _id } = this.state
     
     const { data : { deleteRestaurant : success  } } = await client.mutate({
       mutation  : DELETE_RESTAURANT,
-      variables : { restaurant_id }
+      variables : { _id }
     })
     
     if(success) {
       this.context.throwError({
-        msg : `Restaurant with id ${restaurant_id} was deleted`,
+        msg : `Restaurant with id ${_id} was deleted`,
         type : 'success'
       })
       this.props.history.push(`/restaurants`)

@@ -67,10 +67,15 @@ var schema = buildSchema(`
   }
 `);
 
-app.use(async (req, res, next) => {
-  await mongoose.connect('mongodb://poc_test:poc123@ds161022.mlab.com:61022/new-york-restaurants', { useNewUrlParser: true })
-  next();
-})
+/**
+ * Connect to MongoDB.
+ */
+mongoose.connect('mongodb://poc_test:poc123@ds161022.mlab.com:61022/new-york-restaurants', { useNewUrlParser: true});
+mongoose.connection.on('error', function () {
+  console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
+  process.exit(1);
+});
+mongoose.set('debug', true);
 
 var root = {
   getRestaurantById : async ({id}) => await Restaurant.findOne({_id : { $eq : id }}),
@@ -86,6 +91,7 @@ var root = {
           street
         }
     });
+
     const res = await restaurant.save()
     .then(({_id}) => ({_id}))
     .catch(({_message}) => new Error(_message))
@@ -93,12 +99,11 @@ var root = {
     return res
   },
   deleteRestaurant : async ({ _id }) => {
-    // 2nd param "true", signify only one deletion
-    const { result : { ok }} = await Restaurants.deleteOne({_id}, true)
-    
-    if(!ok) throw new Error('Deletion failed')
+    const res = await Restaurant.deleteOne({_id}, (err) => {
+      if(!err) return false
+    })
 
-    return ok
+    return typeof res === "object"
   }
 };
 
