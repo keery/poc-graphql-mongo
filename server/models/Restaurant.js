@@ -16,7 +16,7 @@ const restaurantSchema = new Schema({
     borough : String,
     cuisine : String,
     address : addressSchema,
-    gardes  : [ gradeSchema ]
+    grades  : [ gradeSchema ]
 })
 
 const Restaurant = model('Restaurant', restaurantSchema)

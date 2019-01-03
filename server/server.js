@@ -1,8 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 import graphqlHTTP from 'express-graphql';
 import { buildSchema } from 'graphql';
+import { Restaurant } from './models';
+
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -60,11 +63,8 @@ var schema = buildSchema(`
   }
 `);
 
-let Restaurants
 app.use(async (req, res, next) => {
-  const client = await MongoClient.connect('mongodb://poc_test:poc123@ds161022.mlab.com:61022/new-york-restaurants', { useNewUrlParser: true })
-  const db = client.db();
-  Restaurants = db.collection("restaurants")
+  await mongoose.connect('mongodb://poc_test:poc123@ds161022.mlab.com:61022/new-york-restaurants', { useNewUrlParser: true })
   next();
 })
 
@@ -72,25 +72,25 @@ var root = {
   getRestaurantById : async ({id}) => await Restaurants.findOne({restaurant_id : { $eq : id }}),
   getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray(),
   createRestaurant : async ({restaurant : {name, cuisine, building, zipcode, street}}) => {
-    const restaurant_id = String(Number.parseInt(Math.random() * 1000000000))
-    
-    const { insertedId , result : { ok }} = await Restaurants.insertOne({
-      name,
-      cuisine,
-      address : {
-        building,
-        zipcode,
-        street
-      },
-      restaurant_id
-    })
 
-    if(ok) return { restaurant_id }
+    const restaurant = new Restaurant({
+        name,
+        cuisine,
+        address : {
+          building,
+          zipcode,
+          street
+        }
+    });
 
-    throw new Error('Insertion failed')
+    const res = await restaurant.save()
+    .then(({_id}) => _id)
+    .catch(({_message}) => new Error(_message))
+
+    return res
   },
   deleteRestaurant : async ({ restaurant_id }) => {
-    //  2nd param "true", signify only one deletion
+    // 2nd param "true", signify only one deletion
     const { result : { ok }} = await Restaurants.deleteOne({restaurant_id}, true)
     
     if(!ok) throw new Error('Deletion failed')
