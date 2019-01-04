@@ -6,7 +6,7 @@ import { buildSchema } from 'graphql';
 
 const app = express();
 const port = process.env.PORT || 5000;
-
+// With graphQL
 // Body parser it's a middleware allowing to handle post HTTP requests, we could not access at post params without this
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
