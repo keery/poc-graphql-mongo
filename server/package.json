@@ -7,11 +7,14 @@
     "dev": "nodemon server.js --exec babel-node"
   },
   "dependencies": {
+    "apollo-server-express": "^2.3.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "express-graphql": "^0.7.1",
+    "glob-promise": "^3.4.0",
     "graphql": "^14.0.2",
-    "mongodb": "^3.1.10"
+    "graphql-tools": "^4.0.3",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

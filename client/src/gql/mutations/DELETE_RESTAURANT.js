@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const DELETE_RESTAURANT = gql`
-    mutation DeleteRestaurant($restaurant_id: String!) {
-        deleteRestaurant(restaurant_id: $restaurant_id)
+    mutation DeleteRestaurant($_id: String!) {
+        deleteRestaurant(_id: $_id)
     }
 `;
 

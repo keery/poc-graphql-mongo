@@ -1,0 +1,4 @@
+type Grade {
+  grade : String
+  score : Int
+}

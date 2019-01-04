@@ -1,0 +1,7 @@
+input RestaurantInput {
+  building : Int
+  street   : String
+  zipcode  : String
+  cuisine  : String
+  name     : String!
+}
