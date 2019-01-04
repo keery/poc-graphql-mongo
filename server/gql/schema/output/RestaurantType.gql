@@ -1,0 +1,8 @@
+type Restaurant {
+  _id           : String!
+  address       : Address
+  borough       : String
+  cuisine       : String
+  name          : String
+  grades        : [Grade]
+}

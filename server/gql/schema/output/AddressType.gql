@@ -1,0 +1,5 @@
+type Address {
+  building : Int
+  street   : String
+  zipcode  : String
+}
