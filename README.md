@@ -109,3 +109,10 @@ In this query only the name and complete address are wished, but if we would mor
         }
     }
 ```
+
+## 🌴 Branches
+Differents branches are created on this repository, but the changement occur only on server side  
+
+- **with-graphql-only** : Standard utilization of GQL with native MongoDB
+- **poc-with-apollo-server** : Use of [apollo server](https://github.com/apollographql/apollo-server) instead GQL with native MongoDB
+- **master and with-mongoose** : New server side architecture including apollo server and ORM Mongoose
