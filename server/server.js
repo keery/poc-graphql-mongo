@@ -11,9 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let dbo;
 let Restaurants
 app.use(async (req, res, next) => {
-  const db = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
-  dbo = db.db("new_york");
-  Restaurants = dbo.collection("restaurants")
+  const client = await MongoClient.connect('mongodb://poc_test:poc123@ds161022.mlab.com:61022/new-york-restaurants', { useNewUrlParser: true })
+  const db = client.db();
+  Restaurants = db.collection("restaurants")
   next();
 })
 
@@ -70,7 +70,12 @@ const resolvers = {
   // First obj param contain, in cas or second level query, the result of parent's resolvers (https://www.apollographql.com/docs/graphql-tools/resolvers.html)
   Query : {
     getRestaurantById : async (obj, {id}) => await Restaurants.findOne({restaurant_id : { $eq : id }}),
-    getRestaurants : async (obj, {skip = 0, limit = 50}) => await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray(),
+    getRestaurants : async (obj, {skip = 0, limit = 50}) => {
+      const restaurants = await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray()
+      
+      // Every restaurant in database doesn't have a restaurant_id, because it is common with other branches which not use this property
+      return restaurants.filter((el) => el.restaurant_id)
+    },
   },
   Mutation : {
     createRestaurant : async (obj, {restaurant : {name, cuisine, building, zipcode, street}}) => {
