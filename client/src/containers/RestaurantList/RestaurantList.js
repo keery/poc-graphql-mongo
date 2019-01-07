@@ -28,7 +28,6 @@ class RestaurantList extends Component {
 
   render() {
     const { restaurants } = this.state
-
     if (restaurants.length === 0) return <Loader />
 
     return (

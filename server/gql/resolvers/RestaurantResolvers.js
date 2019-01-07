@@ -3,7 +3,7 @@ import { Restaurant } from '../../models';
 /**
  * Queries
  */
-const query = {
+export const query = {
   getRestaurantById : async (obj, {id}) => await Restaurant.findOne({_id : { $eq : id }}),
   getRestaurants : async (obj, {skip = 0, limit = 50}) => await Restaurant.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit)
 }
@@ -12,7 +12,7 @@ const query = {
 /**
  * Mutations
  */
-const mutation = {
+export const mutation = {
   createRestaurant : async (obj, {restaurant : {name, cuisine, building, zipcode, street}}) => {
     const restaurant = new Restaurant({
         name,
@@ -39,9 +39,3 @@ const mutation = {
   }
 }
 
-
-
-export default {
-  query,
-  mutation
-}
