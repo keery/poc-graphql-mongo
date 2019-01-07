@@ -1,7 +1,8 @@
 import React, { Fragment, Component } from 'react'
 import { withApollo } from 'react-apollo'
-import { GET_ALL_RESTAURANTS } from '../../gql/queries'
 import { Link } from 'react-router-dom'
+
+import { GET_ALL_RESTAURANTS } from '../../gql'
 import Loader from '../../components/Loader'
 
 class RestaurantList extends Component {

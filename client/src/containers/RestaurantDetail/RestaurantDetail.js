@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo'
 import { Link } from 'react-router-dom'
-import { GET_RESTAURANT_BY_ID, GET_ALL_RESTAURANTS } from '../../gql/queries'
-import { DELETE_RESTAURANT } from '../../gql/mutations'
-import Loader from '../../components/Loader'
+
+import { GET_RESTAURANT_BY_ID, GET_ALL_RESTAURANTS, DELETE_RESTAURANT } from '../../gql'
 import { ErrorContext }  from '../../context'
+import Loader from '../../components/Loader'
 
 
 class RestaurantDetail extends Component {
@@ -34,6 +34,7 @@ class RestaurantDetail extends Component {
     const { data : { deleteRestaurant : success  } } = await client.mutate({
       mutation  : DELETE_RESTAURANT,
       variables : { _id },
+      // Refresh cache
       refetchQueries : [{
         query: GET_ALL_RESTAURANTS
       }],
