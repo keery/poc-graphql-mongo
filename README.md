@@ -113,6 +113,6 @@ In this query only the name and complete address are wished, but if we would mor
 ## 🌴 Branches
 Differents branches are created on this repository, but the changement occur only on server side  
 
-- **with-graphql-only** : Standard utilization of GQL with native MongoDB
-- **poc-with-apollo-server** : Use of [apollo server](https://github.com/apollographql/apollo-server) instead GQL with native MongoDB
-- **master and with-mongoose** : New server side architecture including apollo server and ORM Mongoose
+- **[with-graphql-only](https://github.com/keery/poc-graphql-mongo/tree/with-graphql-only)** : Standard utilization of GQL with native MongoDB
+- **[poc-with-apollo-server](https://github.com/keery/poc-graphql-mongo/tree/poc-with-apollo-server)** : Use of [apollo server](https://github.com/apollographql/apollo-server) instead GQL with native MongoDB
+- **[master](https://github.com/keery/poc-graphql-mongo/tree/master) and [with-mongoose](https://github.com/keery/poc-graphql-mongo/tree/with-mongoose)** : New server side architecture including apollo server and ORM Mongoose
