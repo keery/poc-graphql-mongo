@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo'
 import { Link } from 'react-router-dom'
-import { GET_RESTAURANT_BY_ID } from '../../gql/queries'
+import { GET_RESTAURANT_BY_ID, GET_ALL_RESTAURANTS } from '../../gql/queries'
 import { DELETE_RESTAURANT } from '../../gql/mutations'
 import Loader from '../../components/Loader'
 import { ErrorContext }  from '../../context'
+
 
 class RestaurantDetail extends Component {
   
@@ -32,7 +33,11 @@ class RestaurantDetail extends Component {
     
     const { data : { deleteRestaurant : success  } } = await client.mutate({
       mutation  : DELETE_RESTAURANT,
-      variables : { _id }
+      variables : { _id },
+      refetchQueries : [{
+        query: GET_ALL_RESTAURANTS
+      }],
+      awaitRefetchQueries : true
     })
     
     if(success) {

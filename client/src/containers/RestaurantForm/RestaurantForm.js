@@ -4,6 +4,7 @@ import ErrorForm from '../../components/ErrorForm'
 import { withApollo } from 'react-apollo'
 import * as Yup from 'yup';
 import { CREATE_RESTAURANT } from '../../gql/mutations';
+import { GET_ALL_RESTAURANTS } from '../../gql/queries';
 
 class RestaurantForm extends Component {
   
@@ -35,10 +36,16 @@ class RestaurantForm extends Component {
 
     await client.mutate({
       mutation  : CREATE_RESTAURANT,
-      variables : { restaurant : values }
+      variables : { restaurant : values },
+      refetchQueries : [{
+        query: GET_ALL_RESTAURANTS
+      }],
+      // Wait request's end which are launched with refetchQueries
+      // awaitRefetchQueries : true,
     })
     .then(({ data : { createRestaurant : { _id } } }) => {
       this.props.history.push(`/restaurant/${_id}`)
+
     })
     .catch(res => {
       this.setState({isSubmitting : false})
