@@ -70,7 +70,12 @@ app.use(async (req, res, next) => {
 
 var root = {
   getRestaurantById : async ({id}) => await Restaurants.findOne({restaurant_id : { $eq : id }}),
-  getRestaurants : async ({skip = 0, limit = 50}) => await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray(),
+  getRestaurants : async ({skip = 0, limit = 50}) => {
+    const restaurants = await Restaurants.find({$and:[{name:{ $ne: null }}, {name:{ $ne: "" }}] }).sort({name : 1}).skip(skip).limit(limit).toArray()
+    
+    // Every restaurant in database doesn't have a restaurant_id, because it is common with other branches which not use this property
+    return restaurants.filter((el) => el.restaurant_id)
+  },
   createRestaurant : async ({restaurant : {name, cuisine, building, zipcode, street}}) => {
     const restaurant_id = String(Number.parseInt(Math.random() * 1000000000))
     
