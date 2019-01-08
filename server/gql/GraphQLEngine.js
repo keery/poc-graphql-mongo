@@ -27,17 +27,6 @@ class GraphQLEngine {
         const res = await glob('gql/schema/**/*.gql')
         .then((files) => {
             const schemasData = files.map((filepath) => fs.readFileSync(filepath, { encoding : 'UTF-8'}))
-            
-            schemasData.push(`
-                type Query {
-                    getRestaurantById(id : String!) : Restaurant
-                    getRestaurants(limit : Int, skip : Int) : [Restaurant]
-                }
-                type Mutation {
-                    createRestaurant(restaurant : RestaurantInput!) : Restaurant
-                    deleteRestaurant(_id : String!) : Boolean
-                }
-            `)
 
             return makeExecutableSchema({
                 typeDefs : schemasData,

@@ -1,0 +1,4 @@
+type Mutation {
+    createRestaurant(restaurant: RestaurantInput!) : Restaurant
+    deleteRestaurant(_id: String!) : Boolean
+}

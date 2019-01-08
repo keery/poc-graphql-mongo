@@ -1,0 +1,4 @@
+type Query {
+    getRestaurantById(id: String!) : Restaurant
+    getRestaurants(limit: Int, skip: Int) : [Restaurant]
+}
